@@ -209,24 +209,28 @@
 	var efi = 0;
 	
 	function showDoMenu() {
+		document.getElementById("root").style.display="none"
 		document.getElementById("doMenu").style.display="inline"
 		doMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});
 		renderDisplayOnlyBarcode();
 	}
 	
 	function showEpMenu() {
+		document.getElementById("root").style.display="none"
 		document.getElementById("epMenu").style.display="inline"
 		epMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
 		renderExpiredPastriesBarcode();
 	}
 	
 	function showEfMenu() {
+		document.getElementById("root").style.display="none"
 		document.getElementById("efMenu").style.display="inline"
 		efMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
 		renderExpiredFoodBarcode();
 	}
 	
 	function showMain() {
+		document.getElementById("root").style.display="inline"
 		document.getElementById("doMenu").style.display="none"
 		document.getElementById("epMenu").style.display="none"
 		document.getElementById("efMenu").style.display="none"
