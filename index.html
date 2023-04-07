@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+<style>
+	.body, div {
+	  -webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	  -khtml-user-select: none;
+	  -moz-user-select: none;
+	  -ms-user-select: none;
+	  user-select: none;
+	  
+	}
+	.full {
+		height: 100%;
+		width:	100%;
+		top:	0;
+		left:	0;
+		position: absolute;
+	}
+	.root {
+		background-color:lightgrey;
+	}
+	.doMenu {
+		display: none;
+		background-color:lightgrey;
+	}
+	.epMenu {
+		display: none;
+		background-color:lightgrey;
+	}
+	.efMenu {
+		display: none;
+		background-color:lightgrey;
+	}
+	.center {
+		margin: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-ms-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		text-align:center;
+	}
+	.mainMenu {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.p {
+		text-align: center;
+	}
+	.svgBox {
+		width: 80%;
+		height: auto;
+	}
+	button {
+		font-family: 'Arial';
+		font-size: 5vw;
+	}
+</style>
+<script>
+	var displayOnly = [
+		{ name: "BACON GOUDA CIABATTA SANDWICH *DISPLAY ONLY", upc: "196409960912" },
+		/*{ name: "CHICKEN, MAPLE BUTTER & EGG SANDWICH *DISPLAY ONLY", upc: "196409353547" },*/
+		{ name: "CRISPY GRILLED CHEESE *DISPLAY ONLY", upc: "196409037676" },
+		{ name: "HAM & CHEESE CROISSANT *DISPLAY ONLY", upc: "19640930008" },
+		{ name: "HAM & SWISS PANINI *DISPLAY ONLY", upc: "196409978184" },
+		{ name: "IMPOSSIBLE BREAKFAST SANDWICH *DISPLAY ONLY", upc: "196409164709" },
+		{ name: "RF TURKEY BACON SANDWICH *DISPLAY ONLY", upc: "196409418543" },
+		{ name: "ROASTED HAM AND SWISS SANDWICH *DISPLAY ONLY", upc: "196409960905" },
+		{ name: "SAUSAGE & CHEESE SANDWICH *DISPLAY ONLY", upc: "196409943649" },
+		{ name: "SMOKED BACON SANDWICH *DISPLAY ONLY", upc: "196409960943" },
+		{ name: "SMOKED BACON BREAKFAST WRAP *DISPLAY ONLY", upc: "196409122150" },
+		{ name: "SOUS VIDE EGG BITES BACON GRUYERE *DISPLAY ONLY", upc: "196409055939" },
+		/*{ name: "SOUS VIDE EGG BITES HAM CHEDDAR PEPPERS *DISPLAY ONLY", upc: "196409007433" },*/
+		{ name: "SOUS VIDE EGG BITES ROASTED PEPPER *DISPLAY ONLY", upc: "196409051597" },
+		{ name: "SPINACH EGG WRAP *DISPLAY ONLY", upc: "196409418598" },
+		{ name: "TOMATO MOZZARELLA PANINI *DISPLAY ONLY", upc: "196409425206" },
+		{ name: "TURKEY BASIL PESTO PANINI *DISPLAY ONLY", upc: "196409701195" }
+	];
+
+	var expiredPastries = [ 
+		{ name: "LIME-FROSTED COCONUT BAR", upc: "196409341360" }, 
+		{ name: "CHOCOLATE PISTACHIO SWIRL", upc: "196409385654" }, 
+		{ name: "BIRTHDAY CAKE POP", upc: "000000289023" },
+		{ name: "BLUEBERRY MUFFIN", upc: "000000289146" },
+		{ name: "BLUEBERRY SCONE", upc: "000000289115" },
+		{ name: "BUTTER CROISSANT", upc: "000000289085" },
+		{ name: "BANANA PECAN WALNUT LOAF", upc: "000000289054" },
+		{ name: "CHEESE DANISH", upc: "000000289092" },
+		{ name: "CHOCOLATE BROWNIE", upc: "000000289030" },
+		{ name: "CHOCOLATE CAKE POP", upc: "000000990301" },
+		{ name: "CHOCOLATE CHIP COOKIE", upc: "000000289184" },
+		{ name: "CHOCOLATE CROISSANT", upc: "000000289177" },
+		{ name: "COFFEE CAKE", upc: "000000289153" },
+		{ name: "EARTH CAKE POP", upc: "000009992955" },
+		{ name: "LEMON LOAF", upc: "000000289061" },
+		{ name: "PUMPKIN LOAF", upc: "000000289078" },
+		{ name: "RED VELVET LOAF CAKE", upc: "000009992948" },
+		{ name: "UNICORN CAKE POP", upc: "000000966863" },
+		{ name: "VAN BEAN SCONE", upc: "000000289047" }
+	];
+
+	var expiredFood = [
+		{ name: "HAM & CHEESE CROISSANT", upc: "000000289498" },
+		{ name: "BACON GOUDA CIABATTA SANDWICH", upc: "000000288897" },
+		{ name: "CRISPY GRILLED CHEESE", upc: "00000028949" },
+		{ name: "IMPOSSIBLE BREAKFAST SANDWICH", upc: "000000985321" },
+		{ name: "SMOKED BACON SANDWICH", upc: "000000281829" },
+		{ name: "SAUSAGE & CHEESE SANDWICH", upc: "000000287944" },
+		{ name: "RF TURKEY BACON SANDWICH", upc: "000000287821" },
+		{ name: "TURKEY BASIL PESTO PANINI", upc: "000000055383" },
+		{ name: "SOUS VIDE EGG BITES BACON GRUYERE", upc: "000000070126" },
+		/*{ name: "SOUS VIDE EGG BITES HAM CHEDDAR PEPPERS", upc: "000000778039" },*/
+		{ name: "SOUS VIDE EGG BITES ROASTED PEPPER", upc: "000000077002" },
+		{ name: "SPINACH EGG WRAP", upc: "000000288057" },
+		{ name: "SMOKED BACON BREAKFAST WRAP", upc: "000009993976" },
+		{ name: "TOMATO MOZZARELLA PANINI", upc: "000000055345" },
+		/*{ name: "ROASTED HAM & SWISS SANDWICH", upc: "000000287906" },*/
+		{ name: "HAM & SWISS PANINI", upc: "000000778053" }
+	];
+
+	displayOnly.sort(function(a, b) {
+		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+		if (nameA < nameB) {
+			return -1;
+		}
+		if (nameA > nameB) {
+			return 1;
+		}
+		// names must be equal
+		return 0;
+	});
+	
+	expiredPastries.sort(function(a, b) {
+		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+		if (nameA < nameB) {
+			return -1;
+		}
+		if (nameA > nameB) {
+			return 1;
+		}
+		// names must be equal
+		return 0;
+	});
+	
+	expiredFood.sort(function(a, b) {
+		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+		if (nameA < nameB) {
+			return -1;
+		}
+		if (nameA > nameB) {
+			return 1;
+		}
+		// names must be equal
+		return 0;
+	});
+	
+</script>
+</head>
+<body>
+<div id="root" class="root full">
+	<div id="mainMenu" class="mainMenu center">
+		<button type="button" onclick="showDoMenu()">Display</button>
+		<button type="button" onclick="showEpMenu()">Pastries</button>
+		<button type="button" onclick="showEfMenu()">Food</button>
+	</div>
+</div>
+<div id="doMenu" class="doMenu full">
+	<button type="button" onclick="showMain()">Back</button>
+	<div id="doMenuInner" class="center svgBox">
+		<p id="displayOnlyP"></p>
+		<svg id="displayOnlySVG" class="svgBox" viewBox="0 0 100 100"></svg>
+	</div>
+</div>
+
+<div id="epMenu" class="epMenu full">
+	<button type="button" onclick="showMain()">Back</button>
+	<div id="epMenuInner" class="center svgBox">
+		<p id="expiredPastriesP"></p>
+		<svg id="expiredPastriesSVG" class="svgBox" viewBox="0 0 100 100"></svg>
+	</div>
+</div>
+
+<div id="efMenu" class="efMenu full">
+	<button type="button" onclick="showMain()">Back</button>
+	<div id="efMenuInner" class="center svgBox">
+		<p id="expiredFoodP"></p>
+		<svg id="expiredFoodSVG" class="svgBox" viewBox="0 0 100 100"></svg>
+	</div>
+</div>
+
+<script>
+
+	var doMenuFS = document.querySelector("#doMenu");
+	var epMenuFS = document.querySelector("#epMenu");
+	var efMenuFS = document.querySelector("#efMenu");
+	var rootFS	 = document.querySelector("#root");
+
+	var doi = 0;
+	var epi = 0;
+	var efi = 0;
+	
+	function showDoMenu() {
+		document.getElementById("doMenu").style.display="inline"
+		doMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});
+		renderDisplayOnlyBarcode();
+	}
+	
+	function showEpMenu() {
+		document.getElementById("epMenu").style.display="inline"
+		epMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
+		renderExpiredPastriesBarcode();
+	}
+	
+	function showEfMenu() {
+		document.getElementById("efMenu").style.display="inline"
+		efMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
+		renderExpiredFoodBarcode();
+	}
+	
+	function showMain() {
+		document.getElementById("doMenu").style.display="none"
+		document.getElementById("epMenu").style.display="none"
+		document.getElementById("efMenu").style.display="none"
+		//document.exitFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});
+		rootFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
+		
+		}
+	
+	var w = 2;
+	var h = 100;
+	var f = 20;
+	
+	function renderDisplayOnlyBarcode() {
+		var currentDO = displayOnly[doi];
+		JsBarcode("#displayOnlySVG", currentDO.upc, {
+			format: "upc",
+			width: w, //2
+			height: h, //100
+			fontSize: f, //20
+			displayValue: true
+		});
+		document.getElementById("displayOnlyP").innerHTML=currentDO.name;
+		
+	}
+
+	function renderExpiredPastriesBarcode() {
+		var currentEP = expiredPastries[epi];
+		JsBarcode("#expiredPastriesSVG", currentEP.upc, {
+			format: "upc",
+			width: w,
+			height: h,
+			fontSize: f,
+			displayValue: true
+		});
+		document.getElementById("expiredPastriesP").innerHTML=currentEP.name;
+	}
+	
+	function renderExpiredFoodBarcode() {
+		var currentEF = expiredFood[efi];
+		JsBarcode("#expiredFoodSVG", currentEF.upc, {
+			format: "upc",
+			width: w,
+			height: h,
+			fontSize: f,
+			displayValue: true
+		});
+		document.getElementById("expiredFoodP").innerHTML=currentEF.name;
+	}
+	
+	displayOnlySVG.addEventListener("click", function(e) {
+		var rect = displayOnlySVG.getBoundingClientRect();
+		var centerX = rect.left + (rect.width / 2);
+		if (event.clientX < centerX) {
+			doSVGPrev();
+		} else {
+			doSVGNext();
+		}
+	});
+	
+	function doSVGPrev() {
+	  if(doi-1 >= 0) {
+		doi--;
+		renderDisplayOnlyBarcode();
+		} else {
+			return;
+			}
+	}
+	
+	function doSVGNext() {
+	  if(doi+1 < displayOnly.length) {
+		doi++;
+		renderDisplayOnlyBarcode();
+		} else {
+			return;
+			}
+	}
+
+	expiredPastriesSVG.addEventListener("click", function(e) {
+		var rect = expiredPastriesSVG.getBoundingClientRect();
+		var centerX = rect.left + (rect.width / 2);
+		if (event.clientX < centerX) {
+			epSVGPrev();
+		} else {
+			epSVGNext();
+		}
+	});
+	
+	function epSVGPrev() {
+	  if(epi-1 >= 0) {
+		epi--;
+		renderExpiredPastriesBarcode();
+		} else {
+			return;
+			}
+	}
+	
+	function epSVGNext() {
+	  if(epi+1 < expiredPastries.length) {
+		epi++;
+		renderExpiredPastriesBarcode();
+		} else {
+			return;
+			}
+	}
+	
+	expiredFoodSVG.addEventListener("click", function(e) {
+		var rect = expiredFoodSVG.getBoundingClientRect();
+		var centerX = rect.left + (rect.width / 2);
+		if (event.clientX < centerX) {
+			efSVGPrev();
+		} else {
+			efSVGNext();
+		}
+	});
+	
+	function efSVGPrev() {
+	  if(efi-1 >= 0) {
+		efi--;
+		renderExpiredFoodBarcode();
+		} else {
+			return;
+			}
+	}
+	
+	function efSVGNext() {
+	  if(efi+1 < expiredFood.length) {
+		efi++;
+		renderExpiredFoodBarcode();
+		} else {
+			return;
+			}
+	}
+		
+</script>
+
+</body>
+</html>	
