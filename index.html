@@ -128,18 +128,6 @@ var expiredPastries = [
 		{ name: "HAM & SWISS PANINI", upc: "196409978184" }
 	];
 
-	displayOnly.sort(function(a, b) {
-		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-		if (nameA < nameB) {
-			return -1;
-		}
-		if (nameA > nameB) {
-			return 1;
-		}
-		// names must be equal
-		return 0;
-	});
 	
 	expiredPastries.sort(function(a, b) {
 		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -172,18 +160,8 @@ var expiredPastries = [
 <body>
 <div id="root" class="root full">
 	<div id="mainMenu" class="mainMenu center">
-<!--		
-<button type="button" onclick="showDoMenu()">Display</button>
--->
 		<button type="button" onclick="showEpMenu()">Pastries</button>
 		<button type="button" onclick="showEfMenu()">Food</button>
-	</div>
-</div>
-<div id="doMenu" class="doMenu full">
-	<button type="button" onclick="showMain()">Back</button>
-	<div id="doMenuInner" class="center svgBox">
-		<p id="displayOnlyP"></p>
-		<svg id="displayOnlySVG" class="svgBox" viewBox="0 0 100 100"></svg>
 	</div>
 </div>
 
@@ -205,21 +183,13 @@ var expiredPastries = [
 
 <script>
 
-	var doMenuFS = document.querySelector("#doMenu");
 	var epMenuFS = document.querySelector("#epMenu");
 	var efMenuFS = document.querySelector("#efMenu");
 	var rootFS	 = document.querySelector("#root");
 
-	var doi = 0;
 	var epi = 0;
 	var efi = 0;
-	
-	function showDoMenu() {
-		document.getElementById("root").style.display="none"
-		document.getElementById("doMenu").style.display="inline"
-		doMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});
-		renderDisplayOnlyBarcode();
-	}
+
 	
 	function showEpMenu() {
 		document.getElementById("root").style.display="none"
@@ -237,8 +207,7 @@ var expiredPastries = [
 	
 	function showMain() {
 		document.getElementById("root").style.display="inline"
-		document.getElementById("doMenu").style.display="none"
-		document.getElementById("epMenu").style.display="none"
+			document.getElementById("epMenu").style.display="none"
 		document.getElementById("efMenu").style.display="none"
 		//document.exitFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});
 		rootFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
@@ -248,19 +217,6 @@ var expiredPastries = [
 	var w = 2;
 	var h = 100;
 	var f = 20;
-	
-	function renderDisplayOnlyBarcode() {
-		var currentDO = displayOnly[doi];
-		JsBarcode("#displayOnlySVG", currentDO.upc, {
-			format: "upc",
-			width: w, //2
-			height: h, //100
-			fontSize: f, //20
-			displayValue: true
-		});
-		document.getElementById("displayOnlyP").innerHTML=currentDO.name;
-		
-	}
 
 	function renderExpiredPastriesBarcode() {
 		var currentEP = expiredPastries[epi];
@@ -284,34 +240,6 @@ var expiredPastries = [
 			displayValue: true
 		});
 		document.getElementById("expiredFoodP").innerHTML=currentEF.name;
-	}
-	
-	displayOnlySVG.addEventListener("click", function(e) {
-		var rect = displayOnlySVG.getBoundingClientRect();
-		var centerX = rect.left + (rect.width / 2);
-		if (event.clientX < centerX) {
-			doSVGPrev();
-		} else {
-			doSVGNext();
-		}
-	});
-	
-	function doSVGPrev() {
-	  if(doi-1 >= 0) {
-		doi--;
-		renderDisplayOnlyBarcode();
-		} else {
-			return;
-			}
-	}
-	
-	function doSVGNext() {
-	  if(doi+1 < displayOnly.length) {
-		doi++;
-		renderDisplayOnlyBarcode();
-		} else {
-			return;
-			}
 	}
 
 	expiredPastriesSVG.addEventListener("click", function(e) {
