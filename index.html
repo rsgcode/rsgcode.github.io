@@ -1,304 +1,786 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title></title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-<style>
-	.body, div {
-	  -webkit-touch-callout: none;
-	  -webkit-user-select: none;
-	  -khtml-user-select: none;
-	  -moz-user-select: none;
-	  -ms-user-select: none;
-	  user-select: none;
-	  
-	}
-	.full {
-		height: 100%;
-		width:	100%;
-		top:	0;
-		left:	0;
-		position: absolute;
-	}
-	.root {
-		background-color:lightgrey;
-	}
-	.doMenu {
-		display: none;
-		background-color:lightgrey;
-	}
-	.epMenu {
-		display: none;
-		background-color:lightgrey;
-	}
-	.efMenu {
-		display: none;
-		background-color:lightgrey;
-	}
-	.center {
-		margin: 0;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		-ms-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-		text-align:center;
-	}
-	.mainMenu {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.p {
-		text-align: center;
-	}
-	.svgBox {
-		width: 80%;
-		height: auto;
-	}
-	button {
-		font-family: 'Arial';
-		font-size: 5vw;
-	}
-</style>
-<script>
-	
-var expiredPastries = [ 
-/* { name: "LIME-FROSTED COCONUT BAR", upc: "196409341360" },
-{ name: "CHOCOLATE PISTACHIO SWIRL", upc: "196409385654" },
-{ name: "EARTH CAKE POP", upc: "000009992955" },
-{ name: "RED VELVET LOAF CAKE", upc: "000009992948" },
-		{ name: "UNICORN CAKE POP", upc: "000000966863" }, */
-   /*{ name: "BUMBLEBEE CAKE POP", upc: "196409435137" },*/
-   { name: "COOKIES & CREAM CAKE POP", upc: "196409353554" },
-		{ name: "BIRTHDAY CAKE POP", upc: "196409378229" },
-		{ name: "BLUEBERRY MUFFIN", upc: "196409580271" },
-		{ name: "BLUEBERRY SCONE", upc: "196409858844" },
-		{ name: "BUTTER CROISSANT", upc: "196409831229" },
-		{ name: "BANANA PECAN WALNUT LOAF", upc: "196409390764" },
-		{ name: "CHEESE DANISH", upc: "196409835791" },
-		{ name: "CHOCOLATE BROWNIE", upc: "196409884065" },
-		{ name: "CHOCOLATE CAKE POP", upc: "196409390856" },
-		{ name: "CHOCOLATE CHIP COOKIE", upc: "196409100868" },
-		{ name: "CHOCOLATE CROISSANT", upc: "196409831236" },
-		{ name: "COFFEE CAKE", upc: "196409912072" },
-		{ name: "LEMON LOAF", upc: "196409792278" },
-		{ name: "PUMPKIN LOAF", upc: "196409625132" },
-		{ name: "VAN BEAN SCONE", upc: "196409375686" },
-   /*{ name: "OWL CAKE POP", upc: "19640937207" },*/
-/*{ name: "RACCOON CAKE POP", upc: "196409608807" },*/
-  { name: "PUMPKIN CREAM CHEESE MUFFIN", upc: "19640951858" },
-/*{ name: "SNOWMAN COOKIE", upc: "19640908104" },*/
-/*{ name: "PEPPERMINT BROWNIE CAKE POP", upc: "19640966583" },*/
-/*{ name: "GINGERBREAD LOAF", upc: "19640949767" },*/
-/*{ name: "VALENTINE CAKE POP", upc: "19640996875" },*/
-/*{ name: "VANILLA BEAN CUSTARD DANISH", upc: "19640951872" },*/
-/*{ name: "PINEAPPLE CLOUD CAKE", upc: "196409530160" },*/
-/*{ name: "MUMMY COOKIE", upc: "196409618028"},*/
-/*{ name: "ORANGE CREAM CAKE POP", upc: "196409531655" },*/
-{ name: "PENGUIN COOKIE", upc: "19640960881" },
-{ name: "SNOWMAN CAKE POP", upc: "19640960882" },
-{ name: "DARK TOFFEE BUNDT CAKE", upc: "19640962026" },
-{ name: "CRANBERRY BLISS BAR", upc: "19640981558" },
-{ name: "SUGAR PLUM CHEESE DANISH", upc: "19640962515" }
-/*{ name: "BAKED APPLE CROISSANT", upc: "19640936403" }*/
-
-	];
-
-	var expiredFood = [
-{ name: "EGG, PESTO & MOZZARELLA SANDWICH", upc: "196409538166" },
-	{ name: "POTATO, CHEDDAR AND CHIVES BAKE", upc: "196409337240" },
-	{ name: "CHICKEN, MAPLE BUTTER & EGG SANDWICH", upc: "196409353547" },
-		{ name: "HAM & CHEESE CROISSANT", upc: "196409300084" },
-		{ name: "BACON GOUDA CIABATTA SANDWICH", upc: "196409960912" },
-		{ name: "CRISPY GRILLED CHEESE", upc: "196409037676" },
-		{ name: "IMPOSSIBLE BREAKFAST SANDWICH", upc: "196409164709" },
-		{ name: "SMOKED BACON SANDWICH", upc: "196409960943" },
-		{ name: "SAUSAGE & CHEESE SANDWICH", upc: "196409943649" },
-		{ name: "RF TURKEY BACON SANDWICH", upc: "196409418543" },
-		{ name: "TURKEY BASIL PESTO PANINI", upc: "196409798324" },
-		{ name: "SOUS VIDE EGG BITES BACON GRUYERE", upc: "196409055939" },
-		/*{ name: "SOUS VIDE EGG BITES HAM CHEDDAR PEPPERS", upc: "000000778039" },*/
-		{ name: "SOUS VIDE EGG BITES ROASTED PEPPER", upc: "196409051597" },
-		{ name: "SPINACH EGG WRAP", upc: "196409045077" },
-		{ name: "BACON, SAUSAGE, AND EGG WRAP", upc: "196409122150" },
-		{ name: "TOMATO MOZZARELLA PANINI", upc: "196409798348" },
-		/*{ name: "ROASTED HAM & SWISS SANDWICH", upc: "000000287906" },*/
-		{ name: "HAM & SWISS PANINI", upc: "196409978184" }
-	];
-
-	
-	expiredPastries.sort(function(a, b) {
-		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-		if (nameA < nameB) {
-			return -1;
-		}
-		if (nameA > nameB) {
-			return 1;
-		}
-		// names must be equal
-		return 0;
-	});
-	
-	expiredFood.sort(function(a, b) {
-		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-		if (nameA < nameB) {
-			return -1;
-		}
-		if (nameA > nameB) {
-			return 1;
-		}
-		// names must be equal
-		return 0;
-	});
-	
-</script>
+  <meta charset="UTF-8">
+  <title>Barcode App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: lightgrey;
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    *, *:before, *:after { box-sizing: inherit; }
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: #333;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 2000;
+    }
+    .header button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    /* Main Content */
+    #contentView {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 50px);
+      background: lightgrey;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .viewSwitcher {
+      height: 50px;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .viewSwitcher button {
+      margin: 0 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .barcodeContainer {
+      height: calc(100% - 50px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      overflow: hidden;
+    }
+    .barcodeContainer p {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    
+    .barcodeContainer svg {
+      display: block;
+      width: 80%;
+      max-width: 400px;
+      height: auto;
+      cursor: pointer;
+      margin: 0 auto;
+    }
+    @media (orientation: landscape) {
+      .barcodeContainer svg {
+        width: 50%;
+        max-width: 300px;
+      }
+    }
+    /* Side Menu */
+    .sideMenu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
+      background: #f2f2f2;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 1500;
+      padding: 60px 10px 10px 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sideMenu.open { transform: translateX(0); }
+    .sideMenu .category-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 10px;
+    }
+    .sideMenu .category-buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    .sideMenu .edit-btn {
+      display: inline-block;
+      margin: 0 5px 10px 5px;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #resetBtn { margin-left: auto; }
+    .sideMenu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .sideMenu li {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .sideMenu li span {
+      margin-left: 10px;
+      flex: 1;
+    }
+    .sideMenu li .trash {
+      margin-left: auto;
+      display: none;
+      cursor: pointer;
+    }
+    .sideMenu.edit-mode li .trash { display: inline; }
+    .sideMenu .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ddd;
+      padding: 10px;
+      font-weight: bold;
+      border-radius: 4px;
+      margin-top:10px;
+    }
+    .sideMenu .section-header label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .sideMenu .section-header input { margin-right: 5px; }
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2500;
+    }
+    .modal {
+      background: #fff;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .modal button {
+      margin: 10px;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<div id="root" class="root full">
-	<div id="mainMenu" class="mainMenu center">
-		<button type="button" onclick="showEpMenu()">Pastries</button>
-		<button type="button" onclick="showEfMenu()">Food</button>
-	</div>
-</div>
-
-<div id="epMenu" class="epMenu full">
-	<button type="button" onclick="showMain()">Back</button>
-	<div id="epMenuInner" class="center svgBox">
-		<p id="expiredPastriesP"></p>
-		<svg id="expiredPastriesSVG" class="svgBox" viewBox="0 0 100 100"></svg>
-	</div>
-</div>
-
-<div id="efMenu" class="efMenu full">
-	<button type="button" onclick="showMain()">Back</button>
-	<div id="efMenuInner" class="center svgBox">
-		<p id="expiredFoodP"></p>
-		<svg id="expiredFoodSVG" class="svgBox" viewBox="0 0 100 100"></svg>
-	</div>
-</div>
-
-<script>
-
-	var epMenuFS = document.querySelector("#epMenu");
-	var efMenuFS = document.querySelector("#efMenu");
-	var rootFS	 = document.querySelector("#root");
-
-	var epi = 0;
-	var efi = 0;
-
-	
-	function showEpMenu() {
-		document.getElementById("root").style.display="none"
-		document.getElementById("epMenu").style.display="inline"
-		epMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
-		renderExpiredPastriesBarcode();
-	}
-	
-	function showEfMenu() {
-		document.getElementById("root").style.display="none"
-		document.getElementById("efMenu").style.display="inline"
-		efMenuFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
-		renderExpiredFoodBarcode();
-	}
-	
-	function showMain() {
-		document.getElementById("root").style.display="inline"
-			document.getElementById("epMenu").style.display="none"
-		document.getElementById("efMenu").style.display="none"
-		//document.exitFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});
-		rootFS.requestFullscreen().then(function() {}).catch(function(error) {console.log(error.message);});		
-		
-		}
-	
-	var w = 2;
-	var h = 100;
-	var f = 20;
-
-	function renderExpiredPastriesBarcode() {
-		var currentEP = expiredPastries[epi];
-		JsBarcode("#expiredPastriesSVG", currentEP.upc, {
-			format: "upc",
-			width: w,
-			height: h,
-			fontSize: f,
-			displayValue: true
-		});
-		document.getElementById("expiredPastriesP").innerHTML=currentEP.name;
-	}
-	
-	function renderExpiredFoodBarcode() {
-		var currentEF = expiredFood[efi];
-		JsBarcode("#expiredFoodSVG", currentEF.upc, {
-			format: "upc",
-			width: w,
-			height: h,
-			fontSize: f,
-			displayValue: true
-		});
-		document.getElementById("expiredFoodP").innerHTML=currentEF.name;
-	}
-
-	expiredPastriesSVG.addEventListener("click", function(e) {
-		var rect = expiredPastriesSVG.getBoundingClientRect();
-		var centerX = rect.left + (rect.width / 2);
-		if (event.clientX < centerX) {
-			epSVGPrev();
-		} else {
-			epSVGNext();
-		}
-	});
-	
-	function epSVGPrev() {
-	  if(epi-1 >= 0) {
-		epi--;
-		renderExpiredPastriesBarcode();
-		} else {
-			return;
-			}
-	}
-	
-	function epSVGNext() {
-	  if(epi+1 < expiredPastries.length) {
-		epi++;
-		renderExpiredPastriesBarcode();
-		} else {
-			return;
-			}
-	}
-	
-	expiredFoodSVG.addEventListener("click", function(e) {
-		var rect = expiredFoodSVG.getBoundingClientRect();
-		var centerX = rect.left + (rect.width / 2);
-		if (event.clientX < centerX) {
-			efSVGPrev();
-		} else {
-			efSVGNext();
-		}
-	});
-	
-	function efSVGPrev() {
-	  if(efi-1 >= 0) {
-		efi--;
-		renderExpiredFoodBarcode();
-		} else {
-			return;
-			}
-	}
-	
-	function efSVGNext() {
-	  if(efi+1 < expiredFood.length) {
-		efi++;
-		renderExpiredFoodBarcode();
-		} else {
-			return;
-			}
-	}
-		
-</script>
-
+  <!-- Header -->
+  <div class="header">
+    <button id="addBtn">+</button>
+    <button id="menuBtn">&#9776;</button>
+  </div>
+  
+  <!-- Content View -->
+  <div id="contentView">
+    <div class="viewSwitcher">
+      <button id="btnPastries">Pastries</button>
+      <button id="btnFood">Food</button>
+    </div>
+    <div class="barcodeContainer">
+      <p id="itemName"></p>
+      <svg id="barcodeSVG" viewBox="0 0 100 100"></svg>
+    </div>
+  </div>
+  
+  <!-- Side Menu -->
+  <div id="sideMenu" class="sideMenu">
+    <div class="category-buttons">
+      <button id="sidePastriesBtn">Pastries</button>
+      <button id="sideFoodBtn">Food</button>
+    </div>
+    <div style="display:flex; align-items:center; margin-bottom:10px;">
+      <button id="sideEditBtn" class="edit-btn">Edit</button>
+      <button id="resetBtn" class="edit-btn">Reset</button>
+    </div>
+    <ul id="sideList"></ul>
+  </div>
+  
+  <!-- Modal for adding new UPC -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <h3>Add New UPC</h3>
+      <label>Name: <input type="text" id="newName"></label><br>
+      <label>UPC: <input type="text" id="newUPC" placeholder="12-digit UPC" pattern="\d{12}" inputmode="numeric"></label><br>
+      <label>Category: 
+        <select id="newCategory">
+          <option value="pastries">Pastries</option>
+          <option value="food">Food</option>
+          <option value="seasonalPastries">Seasonal Pastries</option>
+          <option value="seasonalFood">Seasonal Food</option>
+        </select>
+      </label><br>
+      <button id="saveNewBtn">Save</button>
+      <button id="cancelNewBtn">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- Modal for reset confirmation -->
+  <div id="resetModalOverlay" class="modal-overlay">
+    <div class="modal">
+      <h3>WARNING</h3>
+      <p>This will factory reset all settings to their defaults. Any custom additions or deletions will be erased. Do you want to continue?</p>
+      <button id="confirmResetBtn">Yes</button>
+      <button id="cancelResetBtn">No</button>
+    </div>
+  </div>
+  
+  <script>
+    // UPC validation function: calculates the check digit from the first 11 digits and compares with the 12th.
+    function validateUPC(upc) {
+      if (!/^\d{12}$/.test(upc)) return false;
+      var digits = upc.split('').map(Number);
+      var sumOdd = digits[0] + digits[2] + digits[4] + digits[6] + digits[8] + digits[10];
+      var sumEven = digits[1] + digits[3] + digits[5] + digits[7] + digits[9];
+      var checkDigit = (10 - ((sumOdd * 3 + sumEven) % 10)) % 10;
+      return checkDigit === digits[11];
+    }
+    
+    // Default arrays (non-modifiable defaults)
+    var defaultExpiredPastries = [ 
+      { name: "COOKIES & CREAM CAKE POP", upc: "196409353554" },
+      { name: "BAKED APPLE CROISSANT", upc: "196409698105" },
+      { name: "BIRTHDAY CAKE POP", upc: "196409378229" },
+      { name: "BLUEBERRY MUFFIN", upc: "196409580271" },
+      { name: "BUTTER CROISSANT", upc: "196409831229" },
+      { name: "BANANA PECAN WALNUT LOAF", upc: "196409390764" },
+      { name: "CHEESE DANISH", upc: "196409835791" },
+      { name: "CHOCOLATE BROWNIE", upc: "196409884065" },
+      { name: "CHOCOLATE CAKE POP", upc: "196409390856" },
+      { name: "CHOCOLATE CHIP COOKIE", upc: "196409100868" },
+      { name: "CHOCOLATE CROISSANT", upc: "196409831236" },
+      { name: "COFFEE CAKE", upc: "196409912072" },
+      { name: "LEMON LOAF", upc: "196409792278" },
+      { name: "PUMPKIN LOAF", upc: "196409625132" },
+      { name: "VAN BEAN SCONE", upc: "196409375686" }
+    ];
+    
+    var defaultExpiredFood = [
+      { name: "EGG, PESTO & MOZZARELLA SANDWICH", upc: "196409538166" },
+      { name: "POTATO, CHEDDAR AND CHIVES BAKE", upc: "196409337240" },
+      { name: "HAM & CHEESE CROISSANT", upc: "196409300084" },
+      { name: "BACON GOUDA CIABATTA SANDWICH", upc: "196409960912" },
+      { name: "CRISPY GRILLED CHEESE", upc: "196409037676" },
+      { name: "IMPOSSIBLE BREAKFAST SANDWICH", upc: "196409164709" },
+      { name: "SMOKED BACON SANDWICH", upc: "196409960943" },
+      { name: "SAUSAGE & CHEESE SANDWICH", upc: "196409943649" },
+      { name: "RF TURKEY BACON SANDWICH", upc: "196409418543" },
+      { name: "TURKEY BASIL PESTO PANINI", upc: "196409798324" },
+      { name: "SOUS VIDE EGG BITES BACON GRUYERE", upc: "196409055939" },
+      { name: "SOUS VIDE EGG BITES ROASTED PEPPER", upc: "196409051597" },
+      { name: "SPINACH EGG WRAP", upc: "196409045077" },
+      { name: "BACON, SAUSAGE, AND EGG WRAP", upc: "196409122150" },
+      { name: "TOMATO MOZZARELLA PANINI", upc: "196409798348" },
+      { name: "HAM & SWISS PANINI", upc: "196409978184" },
+      { name: "JALAPENO CHICKEN POCKET", upc: "196409706633" },
+      { name: "SPICY FALAFEL POCKET", upc: "196409628928" }
+    ];
+    
+    // Updated seasonal lists as requested
+    var defaultSeasonalPastries = [
+      { name: "OWL CAKE POP", upc: "19640937207" },
+      { name: "PENGUIN COOKIE", upc: "19640960881" },
+      { name: "SNOWMAN CAKE POP", upc: "19640960882" },
+      { name: "DARK TOFFEE BUNDT CAKE", upc: "19640962026" },
+      { name: "CRANBERRY BLISS BAR", upc: "19640981558" },
+      { name: "SUGAR PLUM CHEESE DANISH", upc: "19640962515" },
+      { name: "PUMPKIN CREAM CHEESE MUFFIN", upc: "19640951858" },
+      { name: "VANILLA BEAN CUSTARD DANISH", upc: "196409518724" }
+    ];
+    var defaultSeasonalFood = [
+      { name: "SOUS VIDE EGG BITES HAM CHEDDAR PEPPERS", upc: "000000778039" },
+      { name: "CHICKEN, MAPLE BUTTER & EGG SANDWICH", upc: "196409353547" }
+    ];
+    
+    // Custom additions loaded from localStorage
+    var customExpiredPastries = JSON.parse(localStorage.getItem("custom_pastries") || "[]");
+    var customExpiredFood = JSON.parse(localStorage.getItem("custom_food") || "[]");
+    var customSeasonalPastries = JSON.parse(localStorage.getItem("custom_seasonalPastries") || "[]");
+    var customSeasonalFood = JSON.parse(localStorage.getItem("custom_seasonalFood") || "[]");
+    
+    // Deletions for default items stored in localStorage
+    var deletedExpiredPastries = JSON.parse(localStorage.getItem("deleted_pastries") || "[]");
+    var deletedExpiredFood = JSON.parse(localStorage.getItem("deleted_food") || "[]");
+    var deletedSeasonalPastries = JSON.parse(localStorage.getItem("deleted_seasonalPastries") || "[]");
+    var deletedSeasonalFood = JSON.parse(localStorage.getItem("deleted_seasonalFood") || "[]");
+    
+    // Helper functions to compute current arrays excluding deleted defaults
+    function getExpiredPastries() {
+      var defaults = defaultExpiredPastries.filter(item => !deletedExpiredPastries.includes(item.upc));
+      return defaults.concat(customExpiredPastries);
+    }
+    function getExpiredFood() {
+      var defaults = defaultExpiredFood.filter(item => !deletedExpiredFood.includes(item.upc));
+      return defaults.concat(customExpiredFood);
+    }
+    function getSeasonalPastries() {
+      var defaults = defaultSeasonalPastries.filter(item => !deletedSeasonalPastries.includes(item.upc));
+      return defaults.concat(customSeasonalPastries);
+    }
+    function getSeasonalFood() {
+      var defaults = defaultSeasonalFood.filter(item => !deletedSeasonalFood.includes(item.upc));
+      return defaults.concat(customSeasonalFood);
+    }
+    
+    // Sorting function
+    function sortItems(arr) {
+      arr.sort(function(a, b) {
+        var A = a.name.toUpperCase(), B = b.name.toUpperCase();
+        return A < B ? -1 : A > B ? 1 : 0;
+      });
+    }
+    
+    // Global indices for main view
+    var pastryIndex = 0, foodIndex = 0;
+    var currentView = "pastries"; // "pastries" or "food"
+    
+    function renderCurrentBarcode() {
+      if(currentView === "pastries") {
+        var expired = getExpiredPastries();
+        var seasonal = getSeasonalPastries();
+        var allPastries = expired.concat(seasonal);
+        sortItems(allPastries);
+        var filtered = allPastries.filter(function(item) {
+          var isSeasonal = seasonal.some(seasonItem => seasonItem.upc === item.upc);
+          return getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+        });
+        if(filtered.length === 0) {
+          document.getElementById("itemName").textContent = "No items selected";
+          document.getElementById("barcodeSVG").innerHTML = "";
+          return;
+        }
+        if(pastryIndex >= filtered.length) { pastryIndex = filtered.length - 1; }
+        var currentItem = filtered[pastryIndex];
+        JsBarcode("#barcodeSVG", currentItem.upc, { format: "upc", width: 2, height: 100, fontSize: 20, displayValue: true });
+        document.getElementById("itemName").textContent = currentItem.name;
+      } else {
+        var expired = getExpiredFood();
+        var seasonal = getSeasonalFood();
+        var allFood = expired.concat(seasonal);
+        sortItems(allFood);
+        var filtered = allFood.filter(function(item) {
+          var isSeasonal = seasonal.some(seasonItem => seasonItem.upc === item.upc);
+          return getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+        });
+        if(filtered.length === 0) {
+          document.getElementById("itemName").textContent = "No items selected";
+          document.getElementById("barcodeSVG").innerHTML = "";
+          return;
+        }
+        if(foodIndex >= filtered.length) { foodIndex = filtered.length - 1; }
+        var currentItem = filtered[foodIndex];
+        JsBarcode("#barcodeSVG", currentItem.upc, { format: "upc", width: 2, height: 100, fontSize: 20, displayValue: true });
+        document.getElementById("itemName").textContent = currentItem.name;
+      }
+    }
+    
+    // Switch view without resetting indices
+    document.getElementById("btnPastries").addEventListener("click", function() {
+      currentView = "pastries";
+      renderCurrentBarcode();
+    });
+    document.getElementById("btnFood").addEventListener("click", function() {
+      currentView = "food";
+      renderCurrentBarcode();
+    });
+    
+    // Cycle through items on barcode click
+    document.getElementById("barcodeSVG").addEventListener("click", function(e) {
+      var rect = this.getBoundingClientRect();
+      var centerX = rect.left + (rect.width / 2);
+      if(currentView === "pastries") {
+        var expired = getExpiredPastries();
+        var seasonal = getSeasonalPastries();
+        var allPastries = expired.concat(seasonal);
+        sortItems(allPastries);
+        var filtered = allPastries.filter(function(item) {
+          var isSeasonal = seasonal.some(seasonItem => seasonItem.upc === item.upc);
+          return getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+        });
+        if(e.clientX < centerX && pastryIndex > 0) { pastryIndex--; }
+        else if(e.clientX >= centerX && pastryIndex < filtered.length - 1) { pastryIndex++; }
+      } else {
+        var expired = getExpiredFood();
+        var seasonal = getSeasonalFood();
+        var allFood = expired.concat(seasonal);
+        sortItems(allFood);
+        var filtered = allFood.filter(function(item) {
+          var isSeasonal = seasonal.some(seasonItem => seasonItem.upc === item.upc);
+          return getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+        });
+        if(e.clientX < centerX && foodIndex > 0) { foodIndex--; }
+        else if(e.clientX >= centerX && foodIndex < filtered.length - 1) { foodIndex++; }
+      }
+      renderCurrentBarcode();
+    });
+    
+    // Side Menu functionality
+    var sideMenu = document.getElementById("sideMenu"),
+        menuBtn = document.getElementById("menuBtn"),
+        sidePastriesBtn = document.getElementById("sidePastriesBtn"),
+        sideFoodBtn = document.getElementById("sideFoodBtn"),
+        sideList = document.getElementById("sideList"),
+        sideEditBtn = document.getElementById("sideEditBtn"),
+        resetBtn = document.getElementById("resetBtn"),
+        editMode = false;
+    
+    menuBtn.addEventListener("click", function() {
+      sideMenu.classList.toggle("open");
+      if(!sideMenu.classList.contains("open")) {
+        editMode = false;
+        sideMenu.classList.remove("edit-mode");
+      } else {
+        populateSideMenu(currentView === "pastries" ? "pastries" : "food");
+      }
+    });
+    sidePastriesBtn.addEventListener("click", function() { populateSideMenu("pastries"); });
+    sideFoodBtn.addEventListener("click", function() { populateSideMenu("food"); });
+    
+    function populateSideMenu(category) {
+      sideList.innerHTML = "";
+      var defaultItems, customItems, seasonalItems;
+      if(category === "pastries") {
+        defaultItems = defaultExpiredPastries.filter(item => !deletedExpiredPastries.includes(item.upc));
+        customItems = customExpiredPastries;
+        seasonalItems = getSeasonalPastries();
+      } else {
+        defaultItems = defaultExpiredFood.filter(item => !deletedExpiredFood.includes(item.upc));
+        customItems = customExpiredFood;
+        seasonalItems = getSeasonalFood();
+      }
+      // Alphabetize each category
+      sortItems(defaultItems);
+      sortItems(customItems);
+      sortItems(seasonalItems);
+      
+      // List default items
+      defaultItems.forEach(function(item) {
+        var li = document.createElement("li");
+        var checkbox = document.createElement("input");
+        // For default items, seasonal defaults to false if applicable
+        var isSeasonal = seasonalItems.some(seasonItem => seasonItem.upc === item.upc);
+        checkbox.type = "checkbox";
+        checkbox.checked = getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+        checkbox.addEventListener("change", function() { 
+          setLocalStorageSetting(item.upc, this.checked); 
+          renderCurrentBarcode(); 
+        });
+        li.appendChild(checkbox);
+        var span = document.createElement("span");
+        span.textContent = item.name;
+        li.appendChild(span);
+        var trash = document.createElement("span");
+        trash.textContent = "🗑";
+        trash.className = "trash";
+        trash.style.cursor = "pointer";
+        trash.addEventListener("click", function(e) {
+          e.stopPropagation();
+          if(editMode) {
+            if(category === "pastries") {
+              if(defaultExpiredPastries.find(x => x.upc === item.upc)) {
+                if(!deletedExpiredPastries.includes(item.upc)) {
+                  deletedExpiredPastries.push(item.upc);
+                  localStorage.setItem("deleted_pastries", JSON.stringify(deletedExpiredPastries));
+                }
+              }
+            } else {
+              if(defaultExpiredFood.find(x => x.upc === item.upc)) {
+                if(!deletedExpiredFood.includes(item.upc)) {
+                  deletedExpiredFood.push(item.upc);
+                  localStorage.setItem("deleted_food", JSON.stringify(deletedExpiredFood));
+                }
+              }
+            }
+            populateSideMenu(category);
+            renderCurrentBarcode();
+          }
+        });
+        li.appendChild(trash);
+        sideList.appendChild(li);
+      });
+      
+      // Custom section (only if there are custom items)
+      if(customItems.length > 0) {
+        var customHeader = document.createElement("li");
+        customHeader.className = "section-header";
+        var label = document.createElement("label");
+        var customCheckbox = document.createElement("input");
+        customCheckbox.type = "checkbox";
+        customCheckbox.checked = customItems.every(function(item) {
+          var isSeasonal = seasonalItems.some(seasonItem => seasonItem.upc === item.upc);
+          return getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+        });
+        customCheckbox.addEventListener("change", function() {
+          customItems.forEach(function(item) {
+            var isSeasonal = seasonalItems.some(seasonItem => seasonItem.upc === item.upc);
+            setLocalStorageSetting(item.upc, customCheckbox.checked);
+          });
+          populateSideMenu(category);
+          renderCurrentBarcode();
+        });
+        label.appendChild(customCheckbox);
+        label.appendChild(document.createTextNode("Custom"));
+        customHeader.appendChild(label);
+        sideList.appendChild(customHeader);
+        
+        customItems.forEach(function(item) {
+          var li = document.createElement("li");
+          var checkbox = document.createElement("input");
+          var isSeasonal = seasonalItems.some(seasonItem => seasonItem.upc === item.upc);
+          checkbox.type = "checkbox";
+          checkbox.checked = getLocalStorageSetting(item.upc, isSeasonal ? false : true);
+          checkbox.addEventListener("change", function() { 
+            setLocalStorageSetting(item.upc, this.checked); 
+            renderCurrentBarcode(); 
+          });
+          li.appendChild(checkbox);
+          var span = document.createElement("span");
+          span.textContent = item.name;
+          li.appendChild(span);
+          var trash = document.createElement("span");
+          trash.textContent = "🗑";
+          trash.className = "trash";
+          trash.style.cursor = "pointer";
+          trash.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if(editMode) {
+              var idx = customItems.findIndex(x => x.upc === item.upc);
+              if(idx !== -1) {
+                customItems.splice(idx, 1);
+                if(category === "pastries") {
+                  localStorage.setItem("custom_pastries", JSON.stringify(customItems));
+                } else {
+                  localStorage.setItem("custom_food", JSON.stringify(customItems));
+                }
+              }
+              populateSideMenu(category);
+              renderCurrentBarcode();
+            }
+          });
+          li.appendChild(trash);
+          sideList.appendChild(li);
+        });
+      }
+      
+      // Seasonal section with default false values
+      if(seasonalItems.length > 0) {
+        var headerLi = document.createElement("li");
+        headerLi.className = "section-header";
+        var label = document.createElement("label");
+        var headerCheckbox = document.createElement("input");
+        headerCheckbox.type = "checkbox";
+        headerCheckbox.checked = seasonalItems.every(function(item) {
+          return getLocalStorageSetting(item.upc, false);
+        });
+        headerCheckbox.addEventListener("change", function() {
+          seasonalItems.forEach(function(item) {
+            setLocalStorageSetting(item.upc, headerCheckbox.checked);
+          });
+          populateSideMenu(category);
+          renderCurrentBarcode();
+        });
+        label.appendChild(headerCheckbox);
+        label.appendChild(document.createTextNode("Seasonal"));
+        headerLi.appendChild(label);
+        sideList.appendChild(headerLi);
+        
+        seasonalItems.forEach(function(item) {
+          var li = document.createElement("li");
+          var checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = getLocalStorageSetting(item.upc, false);
+          checkbox.addEventListener("change", function() { 
+            setLocalStorageSetting(item.upc, this.checked); 
+            renderCurrentBarcode(); 
+          });
+          li.appendChild(checkbox);
+          var span = document.createElement("span");
+          span.textContent = item.name;
+          li.appendChild(span);
+          var trash = document.createElement("span");
+          trash.textContent = "🗑";
+          trash.className = "trash";
+          trash.style.cursor = "pointer";
+          trash.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if(editMode) {
+              if(category === "pastries") {
+                if(defaultSeasonalPastries.find(x => x.upc === item.upc)) {
+                  if(!deletedSeasonalPastries.includes(item.upc)) {
+                    deletedSeasonalPastries.push(item.upc);
+                    localStorage.setItem("deleted_seasonalPastries", JSON.stringify(deletedSeasonalPastries));
+                  }
+                } else {
+                  var idx = customSeasonalPastries.findIndex(x => x.upc === item.upc);
+                  if(idx !== -1) {
+                    customSeasonalPastries.splice(idx, 1);
+                    localStorage.setItem("custom_seasonalPastries", JSON.stringify(customSeasonalPastries));
+                  }
+                }
+              } else {
+                if(defaultSeasonalFood.find(x => x.upc === item.upc)) {
+                  if(!deletedSeasonalFood.includes(item.upc)) {
+                    deletedSeasonalFood.push(item.upc);
+                    localStorage.setItem("deleted_seasonalFood", JSON.stringify(deletedSeasonalFood));
+                  }
+                } else {
+                  var idx = customSeasonalFood.findIndex(x => x.upc === item.upc);
+                  if(idx !== -1) {
+                    customSeasonalFood.splice(idx, 1);
+                    localStorage.setItem("custom_seasonalFood", JSON.stringify(customSeasonalFood));
+                  }
+                }
+              }
+              populateSideMenu(category);
+              renderCurrentBarcode();
+            }
+          });
+          li.appendChild(trash);
+          sideList.appendChild(li);
+        });
+      }
+      sideMenu.classList.toggle("edit-mode", editMode);
+    }
+    
+    sideEditBtn.addEventListener("click", function() {
+      editMode = !editMode;
+      sideMenu.classList.toggle("edit-mode", editMode);
+    });
+    
+    // Reset button and modal functionality
+    resetBtn.addEventListener("click", function() {
+      document.getElementById("resetModalOverlay").style.display = "flex";
+    });
+    document.getElementById("cancelResetBtn").addEventListener("click", function() {
+      document.getElementById("resetModalOverlay").style.display = "none";
+    });
+    document.getElementById("confirmResetBtn").addEventListener("click", function() {
+      // Reset custom additions and deletion records
+      localStorage.removeItem("custom_pastries");
+      localStorage.removeItem("custom_food");
+      localStorage.removeItem("custom_seasonalPastries");
+      localStorage.removeItem("custom_seasonalFood");
+      localStorage.removeItem("deleted_pastries");
+      localStorage.removeItem("deleted_food");
+      localStorage.removeItem("deleted_seasonalPastries");
+      localStorage.removeItem("deleted_seasonalFood");
+      customExpiredPastries = [];
+      customExpiredFood = [];
+      customSeasonalPastries = [];
+      customSeasonalFood = [];
+      deletedExpiredPastries = [];
+      deletedExpiredFood = [];
+      deletedSeasonalPastries = [];
+      deletedSeasonalFood = [];
+      // Also clear checkbox settings
+      Object.keys(localStorage).forEach(function(key) {
+        if(key.indexOf("item_") === 0) { localStorage.removeItem(key); }
+      });
+      document.getElementById("resetModalOverlay").style.display = "none";
+      if(sideMenu.classList.contains("open")) {
+        populateSideMenu(currentView === "pastries" ? "pastries" : "food");
+      }
+      renderCurrentBarcode();
+    });
+    
+    function getLocalStorageSetting(upc, defaultVal) {
+      var setting = localStorage.getItem("item_" + upc);
+      return setting === null ? defaultVal : (setting === "true");
+    }
+    
+    function setLocalStorageSetting(upc, value) {
+      localStorage.setItem("item_" + upc, value);
+    }
+    
+    // Modal functionality for adding new UPC
+    var addBtn = document.getElementById("addBtn"),
+        modalOverlay = document.getElementById("modalOverlay"),
+        saveNewBtn = document.getElementById("saveNewBtn"),
+        cancelNewBtn = document.getElementById("cancelNewBtn");
+    
+    addBtn.addEventListener("click", function() { modalOverlay.style.display = "flex"; });
+    cancelNewBtn.addEventListener("click", function() { modalOverlay.style.display = "none"; });
+    
+    saveNewBtn.addEventListener("click", function() {
+      var newName = document.getElementById("newName").value.trim(),
+          newUPC = document.getElementById("newUPC").value.trim(),
+          newCategory = document.getElementById("newCategory").value,
+          newItem = { name: newName, upc: newUPC };
+      if (!validateUPC(newUPC)) {
+        alert("Invalid UPC. Please enter a valid 12-digit UPC with a correct check digit.");
+        document.getElementById("newUPC").focus();
+        return;
+      }
+      if(newCategory === "pastries") {
+        customExpiredPastries.push(newItem);
+        localStorage.setItem("custom_pastries", JSON.stringify(customExpiredPastries));
+      } else if(newCategory === "food") {
+        customExpiredFood.push(newItem);
+        localStorage.setItem("custom_food", JSON.stringify(customExpiredFood));
+      } else if(newCategory === "seasonalPastries") {
+        customSeasonalPastries.push(newItem);
+        localStorage.setItem("custom_seasonalPastries", JSON.stringify(customSeasonalPastries));
+      } else if(newCategory === "seasonalFood") {
+        customSeasonalFood.push(newItem);
+        localStorage.setItem("custom_seasonalFood", JSON.stringify(customSeasonalFood));
+      }
+      modalOverlay.style.display = "none";
+      document.getElementById("newName").value = "";
+      document.getElementById("newUPC").value = "";
+      document.getElementById("newCategory").selectedIndex = 0;
+      var cat = (newCategory.indexOf("seasonal") !== -1) ? (newCategory==="seasonalPastries" ? "pastries" : "food") : newCategory;
+      if(sideMenu.classList.contains("open")) { populateSideMenu(cat); }
+      renderCurrentBarcode();
+    });
+    
+    // Hide side menu when clicking outside and disable edit mode
+    document.addEventListener("click", function(e) {
+      if (sideMenu.classList.contains("open") && !sideMenu.contains(e.target) && e.target.id !== "menuBtn") {
+        sideMenu.classList.remove("open");
+        editMode = false;
+        sideMenu.classList.remove("edit-mode");
+      }
+    });
+    
+    renderCurrentBarcode();
+  </script>
 </body>
-</html>	
+</html>
