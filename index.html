@@ -70,7 +70,8 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      overflow: hidden;
+      overflow-y: auto;
+      padding-bottom: 3rem;
     }
     .barcodeContainer p {
       margin: 0 0 10px 0;
@@ -78,7 +79,6 @@
       font-weight: bold;
       text-align: center;
     }
-    
     .barcodeContainer svg {
       display: block;
       width: 80%;
@@ -92,11 +92,16 @@
         width: 50%;
         max-width: 300px;
       }
+      .sideMenu {
+      	top: 12vh !important;
+      	padding-top: 2vg !important;
+      	height: calc(100vh - 2vh) !important;
+      }
     }
     /* Side Menu */
     .sideMenu {
       position: fixed;
-      top: 0;
+      top: 3vh;
       right: 0;
       width: 300px;
       height: 100vh;
@@ -105,9 +110,10 @@
       transform: translateX(100%);
       transition: transform 0.3s ease;
       z-index: 1500;
-      padding: 60px 10px 10px 10px;
+      padding: 4vh 2vw 4vh 2vw;
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
     }
     .sideMenu.open { transform: translateX(0); }
     .sideMenu .category-buttons {
@@ -131,7 +137,7 @@
     #resetBtn { margin-left: auto; }
     .sideMenu ul {
       list-style: none;
-      padding: 0;
+      padding: 0 0 4vh 0;
       margin: 0;
       flex: 1;
       overflow-y: auto;
@@ -180,7 +186,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.6);
       display: none;
       align-items: center;
       justify-content: center;
@@ -188,17 +194,50 @@
     }
     .modal {
       background: #fff;
-      padding: 20px;
+      padding: 2rem;
       width: 90%;
-      max-width: 400px;
-      border-radius: 5px;
+      max-width: 450px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: left;
+      position: relative;
+    }
+    .modal h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
       text-align: center;
     }
+    .modal label {
+      display: block;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    .modal input,
+    .modal select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 0.25rem;
+      font-size: 1rem;
+    }
+    .modal .button-group {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
     .modal button {
-      margin: 10px;
-      padding: 5px 10px;
-      font-size: 16px;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
       cursor: pointer;
+      margin: 0 0.5rem;
+      transition: background 0.3s;
+    }
+    .modal button:hover {
+      background: #555;
     }
   </style>
 </head>
@@ -238,18 +277,24 @@
   <div id="modalOverlay" class="modal-overlay">
     <div class="modal">
       <h3>Add New UPC</h3>
-      <label>Name: <input type="text" id="newName"></label><br>
-      <label>UPC: <input type="text" id="newUPC" placeholder="12-digit UPC" pattern="\d{12}" inputmode="numeric"></label><br>
-      <label>Category: 
+      <label>Name:
+        <input type="text" id="newName">
+      </label>
+      <label>UPC:
+        <input type="text" id="newUPC" placeholder="12-digit UPC" pattern="\d{12}" inputmode="numeric">
+      </label>
+      <label>Category:
         <select id="newCategory">
           <option value="pastries">Pastries</option>
           <option value="food">Food</option>
           <option value="seasonalPastries">Seasonal Pastries</option>
           <option value="seasonalFood">Seasonal Food</option>
         </select>
-      </label><br>
-      <button id="saveNewBtn">Save</button>
-      <button id="cancelNewBtn">Cancel</button>
+      </label>
+      <div class="button-group">
+        <button id="saveNewBtn">Save</button>
+        <button id="cancelNewBtn">Cancel</button>
+      </div>
     </div>
   </div>
   
@@ -258,8 +303,10 @@
     <div class="modal">
       <h3>WARNING</h3>
       <p>This will factory reset all settings to their defaults. Any custom additions or deletions will be erased. Do you want to continue?</p>
-      <button id="confirmResetBtn">Yes</button>
-      <button id="cancelResetBtn">No</button>
+      <div class="button-group">
+        <button id="confirmResetBtn">Yes</button>
+        <button id="cancelResetBtn">No</button>
+      </div>
     </div>
   </div>
   
@@ -495,7 +542,6 @@
       defaultItems.forEach(function(item) {
         var li = document.createElement("li");
         var checkbox = document.createElement("input");
-        // For default items, seasonal defaults to false if applicable
         var isSeasonal = seasonalItems.some(seasonItem => seasonItem.upc === item.upc);
         checkbox.type = "checkbox";
         checkbox.checked = getLocalStorageSetting(item.upc, isSeasonal ? false : true);
@@ -550,7 +596,6 @@
         });
         customCheckbox.addEventListener("change", function() {
           customItems.forEach(function(item) {
-            var isSeasonal = seasonalItems.some(seasonItem => seasonItem.upc === item.upc);
             setLocalStorageSetting(item.upc, customCheckbox.checked);
           });
           populateSideMenu(category);
@@ -781,8 +826,6 @@
     });
     
     renderCurrentBarcode();
-    
-    
   </script>
 </body>
 </html>
